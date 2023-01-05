@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=bash -c 'sleep 8; xmodmap ~/.config/.Xmodmap'
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[en_US]=Swap key
+Name=Swap key
+Comment[en_US]=
+Comment=Need 8 or 10 second to delay the loading time to linux.

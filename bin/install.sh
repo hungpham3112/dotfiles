@@ -109,6 +109,21 @@ function copy_xmodmap() {
     fi
 }
 
+function copy_alacritty_settings() {
+    ALACRITTY_DIR="${CONFIG_DIR}/alacritty/"
+    if [[ -d "$ALACRITTY_DIR" ]]
+    then
+        true
+    else
+        sudo mkdir $ALACRITTY_DIR
+    fi
+    if sudo cp "${DOTFILES_DIR}/alacritty/alacritty.yml" "${CONFIG_DIR}/alacritty/alacritty.yml"; then
+        echo -e "${GREEN}Copy alacritty settings successfully ${CHECK_DONE}${NC}"
+    else
+        echo -e "${RED}Copy alacritty settings fail ${NC}"
+    fi
+}
+
 function main() {
     print_logo
     update_system
@@ -120,5 +135,7 @@ function main() {
     install_themes
     install_icons
     copy_xmodmap
+    copy_alacritty_settings
 }
+
 main

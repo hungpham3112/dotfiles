@@ -439,7 +439,7 @@ live_config_reload: true
 #   - (Linux/BSD/macOS) `$SHELL` or the user's login shell, if `$SHELL` is unset
 #   - (Windows) powershell
 shell:
- program: /bin/bash
+ program: /usr/bin/bash
  # args:
    # - -nologo
 

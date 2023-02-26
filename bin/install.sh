@@ -48,7 +48,7 @@ function clone_dotfiles() {
     if [[ -d "$DOTFILES_DIR" ]]; then
       sudo rm -rf $DOTFILES_DIR
     fi
-    if sudo git clone https://github.com/hungpham3112/.dotfiles.git ~/.dotfiles; then
+    if git clone https://github.com/hungpham3112/.dotfiles.git ~/.dotfiles; then
         echo -e "${GREEN}Clone dotfiles folder successfully ${CHECK_DONE}${NC}"
     else
         echo -e "${RED}Clone dotfiles folder fail ${NC}"
@@ -64,16 +64,16 @@ function load_gnome_shell_settings() {
     fi
 }
 
-function load_autostart_program() {
+function symlink_autostart_program() {
     SWAPKEY_FILE="${CONFIG_DIR}/autostart/swapkey.desktop"
     if [[ -f "$SWAPKEY_FILE" ]]
     then
         sudo rm $SWAPKEY_FILE -f
-        sudo cp "${DOTFILES_DIR}/swapkey.desktop" $SWAPKEY_FILE
-        echo -e "${GREEN}Copy swapkey autostart file successfully ${CHECK_DONE}${NC}"
+        sudo ln "${DOTFILES_DIR}/swapkey.desktop" $SWAPKEY_FILE --force
+        echo -e "${GREEN}Symlink swapkey autostart file successfully ${CHECK_DONE}${NC}"
     else
-        sudo cp "${DOTFILES_DIR}/swapkey.desktop" $SWAPKEY_FILE
-        echo -e "${GREEN}Copy swapkey autostart file successfully ${CHECK_DONE}${NC}"
+        sudo ln "${DOTFILES_DIR}/swapkey.desktop" $SWAPKEY_FILE --force
+        echo -e "${GREEN}Symlink swapkey autostart file successfully ${CHECK_DONE}${NC}"
     fi
 }
 
@@ -101,15 +101,15 @@ function install_icons() {
     fi
 }
 
-function copy_xmodmap() {
-    if sudo cp "${DOTFILES_DIR}/.Xmodmap" "${CONFIG_DIR}/.Xmodmap"; then
-        echo -e "${GREEN}Copy .Xmodmap file successfully ${CHECK_DONE}${NC}"
+function symlink_xmodmap() {
+    if sudo ln "${DOTFILES_DIR}/.Xmodmap" "${CONFIG_DIR}/.Xmodmap" --force; then
+        echo -e "${GREEN}Symlink .Xmodmap file successfully ${CHECK_DONE}${NC}"
     else
-        echo -e "${RED}Copy .Xmodmap file fail ${NC}"
+        echo -e "${RED}Symlink .Xmodmap file fail ${NC}"
     fi
 }
 
-function copy_alacritty_settings() {
+function symlink_alacritty_settings() {
     ALACRITTY_DIR="${CONFIG_DIR}/alacritty/"
     if [[ -d "$ALACRITTY_DIR" ]]
     then
@@ -117,10 +117,18 @@ function copy_alacritty_settings() {
     else
         sudo mkdir $ALACRITTY_DIR
     fi
-    if sudo cp "${DOTFILES_DIR}/alacritty/alacritty.yml" "${CONFIG_DIR}/alacritty/alacritty.yml"; then
-        echo -e "${GREEN}Copy alacritty settings successfully ${CHECK_DONE}${NC}"
+    if sudo ln "${DOTFILES_DIR}/alacritty/alacritty.yml" "${CONFIG_DIR}/alacritty/alacritty.yml" --force; then
+        echo -e "${GREEN}Symlink alacritty settings successfully ${CHECK_DONE}${NC}"
     else
-        echo -e "${RED}Copy alacritty settings fail ${NC}"
+        echo -e "${RED}Symlink alacritty settings fail ${NC}"
+    fi
+}
+
+function symlink_bashrc() {
+    if sudo ln $DOTFILES_DIR/.bashrc ~/.bashrc --force; then
+        echo -e "${GREEN}Symlink .bashrc successfully ${CHECK_DONE}${NC}"
+    else
+        echo -e "${RED}Symlink .bashrc settings fail ${NC}"
     fi
 }
 
@@ -130,12 +138,13 @@ function main() {
     install_curl
     install_vide
     clone_dotfiles
-    load_gnome_shell_settings
-    load_autostart_program
+    symlink_autostart_program
     install_themes
     install_icons
-    copy_xmodmap
-    copy_alacritty_settings
+    load_gnome_shell_settings
+    symlink_xmodmap
+    symlink_alacritty_settings
+    symlink_bashrc
 }
 
 main

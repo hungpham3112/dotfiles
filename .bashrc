@@ -129,3 +129,5 @@ refreshenv()
 {
     source ~/.bashrc
 }
+source ~/.local/share/blesh/ble.sh
+source ~/.local/share/blesh/ble.sh

@@ -132,6 +132,15 @@ function symlink_bashrc() {
     fi
 }
 
+function install_ble() {
+    if git clone --recursive https://github.com/akinomyoga/ble.sh.git; then
+        make -C ble.sh install PREFIX=~/.local
+        echo -e "${GREEN}Install ble.sh successfully ${CHECK_DONE}${NC}"
+    else
+        echo -e "${RED}Install ble.sh fail ${NC}"
+    fi
+}
+
 function main() {
     print_logo
     update_system
@@ -141,6 +150,7 @@ function main() {
     symlink_autostart_program
     install_themes
     install_icons
+    install_ble
     load_gnome_shell_settings
     symlink_xmodmap
     symlink_alacritty_settings

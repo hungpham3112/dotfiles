@@ -131,3 +131,22 @@ refreshenv()
 }
 source ~/.local/share/blesh/ble.sh
 source ~/.local/share/blesh/ble.sh
+source ~/.local/share/blesh/ble.sh
+
+# >>> juliaup initialize >>>
+
+# !! Contents within this block are managed by juliaup !!
+
+case ":$PATH:" in
+    *:/home/sofia/.juliaup/bin:*)
+        ;;
+
+    *)
+        export PATH=/home/sofia/.juliaup/bin${PATH:+:${PATH}}
+        ;;
+esac
+
+export FZF_DEFAULT_COMMAND="find . -path '*/.git/*' -prune -o -printf '%P\n'"
+# <<< juliaup initialize <<<
+
+export PATH="$HOME/miniconda3/bin:$PATH"

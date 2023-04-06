@@ -141,6 +141,15 @@ function install_ble() {
     fi
 }
 
+function install_miniconda() {
+    if chmod +x $DOTFILES_DIR/bin/install_miniconda.sh && $DOTFILES_DIR/bin/install_miniconda.sh; then
+        echo -e "${GREEN}Install miniconda successfully ${CHECK_DONE}${NC}"
+    else
+        echo -e "${RED}Install miniconda fail ${NC}"
+    fi
+}
+
+
 function main() {
     print_logo
     update_system
@@ -155,6 +164,7 @@ function main() {
     symlink_xmodmap
     symlink_alacritty_settings
     symlink_bashrc
+    install_miniconda
 }
 
 main

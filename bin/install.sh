@@ -48,7 +48,7 @@ function clone_dotfiles() {
     if [[ -d "$DOTFILES_DIR" ]]; then
       sudo rm -rf $DOTFILES_DIR
     fi
-    if git clone git@github.com:hungpham3112/dotfiles.git ~/.dotfiles; then
+    if git clone https://github.com/hungpham3112/dotfiles.git ~/.dotfiles; then
         echo -e "${GREEN}Clone dotfiles folder successfully ${CHECK_DONE}${NC}"
     else
         echo -e "${RED}Clone dotfiles folder fail ${NC}"

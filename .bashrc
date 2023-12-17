@@ -129,8 +129,7 @@ refreshenv()
 {
     source ~/.bashrc
 }
-source ~/.local/share/blesh/ble.sh
-source ~/.local/share/blesh/ble.sh
+
 source ~/.local/share/blesh/ble.sh
 
 # >>> juliaup initialize >>>
@@ -149,4 +148,22 @@ esac
 export FZF_DEFAULT_COMMAND="find . -path '*/.git/*' -prune -o -printf '%P\n'"
 # <<< juliaup initialize <<<
 
-export PATH="$HOME/miniconda3/bin:$PATH"
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/vanellope/miniforge3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/vanellope/miniforge3/etc/profile.d/conda.sh" ]; then
+        . "/home/vanellope/miniforge3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/vanellope/miniforge3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+
+if [ -f "/home/vanellope/miniforge3/etc/profile.d/mamba.sh" ]; then
+    . "/home/vanellope/miniforge3/etc/profile.d/mamba.sh"
+fi
+# <<< conda initialize <<<
+

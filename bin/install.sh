@@ -141,30 +141,37 @@ function install_ble() {
     fi
 }
 
-function install_miniconda() {
-    if chmod +x $DOTFILES_DIR/bin/install_miniconda.sh && $DOTFILES_DIR/bin/install_miniconda.sh; then
-        echo -e "${GREEN}Install miniconda successfully ${CHECK_DONE}${NC}"
+function install_mamba() {
+    MINIFORGE3_DIR="$HOME/miniforge3/"
+    if [[ -d $MINIFORGE3_DIR ]]; then
+        echo -e "${GREEN}Mamba already exist ${CHECK_DONE}${NC}"
     else
-        echo -e "${RED}Install miniconda fail ${NC}"
+        if curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"; then
+            bash Miniforge3-$(uname)-$(uname -m).sh
+            rm Miniforge3-$(uname)-$(uname -m).sh -f
+            echo -e "${GREEN}Install mamba successfully ${CHECK_DONE}${NC}"
+        else
+            echo -e "${RED}Install mamba fail ${NC}"
+        fi
     fi
 }
 
 
 function main() {
-    print_logo
-    update_system
-    install_curl
-    install_vide
-    clone_dotfiles
-    symlink_autostart_program
-    install_themes
-    install_icons
-    install_ble
-    load_gnome_shell_settings
-    symlink_xmodmap
-    symlink_alacritty_settings
-    symlink_bashrc
-    install_miniconda
+    # print_logo
+    # update_system
+    # install_curl
+    # install_vide
+    # clone_dotfiles
+    # symlink_autostart_program
+    # install_themes
+    # install_icons
+    # install_ble
+    # load_gnome_shell_settings
+    # symlink_xmodmap
+    # symlink_alacritty_settings
+    # symlink_bashrc
+    install_mamba
 }
 
 main

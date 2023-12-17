@@ -133,11 +133,17 @@ function symlink_bashrc() {
 }
 
 function install_ble() {
-    if git clone --recursive https://github.com/akinomyoga/ble.sh.git; then
-        make -C ble.sh install PREFIX=~/.local
-        echo -e "${GREEN}Install ble.sh successfully ${CHECK_DONE}${NC}"
+    BLE_DIR="$HOME/ble.sh/"
+    if [[ -d $BLE_DIR ]]; then
+        echo -e "${GREEN}ble.sh already exist ${CHECK_DONE}${NC}"
     else
-        echo -e "${RED}Install ble.sh fail ${NC}"
+        if git clone --recursive https://github.com/akinomyoga/ble.sh.git $HOME/ble.sh; then
+            sudo apt install -y gawk
+            make -C ble.sh install PREFIX=~/.local
+            echo -e "${GREEN}Install ble.sh successfully ${CHECK_DONE}${NC}"
+        else
+            echo -e "${RED}Install ble.sh fail ${NC}"
+        fi
     fi
 }
 
@@ -158,19 +164,19 @@ function install_mamba() {
 
 
 function main() {
-    # print_logo
-    # update_system
-    # install_curl
-    # install_vide
-    # clone_dotfiles
-    # symlink_autostart_program
-    # install_themes
-    # install_icons
-    # install_ble
-    # load_gnome_shell_settings
-    # symlink_xmodmap
-    # symlink_alacritty_settings
-    # symlink_bashrc
+    print_logo
+    update_system
+    install_curl
+    install_vide
+    clone_dotfiles
+    symlink_autostart_program
+    install_themes
+    install_icons
+    install_ble
+    load_gnome_shell_settings
+    symlink_xmodmap
+    symlink_alacritty_settings
+    symlink_bashrc
     install_mamba
 }
 

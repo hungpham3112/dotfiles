@@ -166,4 +166,3 @@ if [ -f "/home/vanellope/miniforge3/etc/profile.d/mamba.sh" ]; then
     . "/home/vanellope/miniforge3/etc/profile.d/mamba.sh"
 fi
 # <<< conda initialize <<<
-

@@ -1,0 +1,44 @@
+live_config_reload = true
+
+[cursor.style]
+blinking = "Always"
+
+[env]
+TERM = "xterm-256color"
+
+[font.normal]
+family = "Cousine NFM"
+style = "Regular"
+
+[[keyboard.bindings]]
+action = "CreateNewWindow"
+key = "T"
+mode = "Vi|~Search"
+mods = "Shift|Control"
+
+[[keyboard.bindings]]
+action = "SpawnNewInstance"
+key = "N"
+mode = "Vi|~Search"
+mods = "Shift|Control"
+
+[scrolling]
+history = 10000
+multiplier = 3
+
+[shell]
+program = "/usr/bin/bash"
+
+[window]
+dynamic_title = false
+opacity = 0.7
+startup_mode = "Maximized"
+title = "Alacritty"
+
+[window.class]
+general = "Alacritty"
+instance = "Alacritty"
+
+[window.padding]
+x = 8
+y = 8

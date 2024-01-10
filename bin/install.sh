@@ -117,7 +117,7 @@ function symlink_alacritty_settings() {
     else
         sudo mkdir $ALACRITTY_DIR
     fi
-    if sudo ln "${DOTFILES_DIR}/alacritty/alacritty.yml" "${CONFIG_DIR}/alacritty/alacritty.yml" --force; then
+    if sudo ln "${DOTFILES_DIR}/alacritty/alacritty.toml" "${CONFIG_DIR}/alacritty/alacritty.toml" --force; then
         echo -e "${GREEN}Symlink alacritty settings successfully ${CHECK_DONE}${NC}"
     else
         echo -e "${RED}Symlink alacritty settings fail ${NC}"

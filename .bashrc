@@ -1,3 +1,4 @@
+[[ $- == *i* ]] && source $HOME/.local/share/blesh/ble.sh --noattach # This line must be the first one
 neofetch
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
@@ -130,22 +131,19 @@ refreshenv()
     source ~/.bashrc
 }
 
-source ~/.local/share/blesh/ble.sh
-
 # >>> juliaup initialize >>>
 
 # !! Contents within this block are managed by juliaup !!
 
 case ":$PATH:" in
-    *:/home/sofia/.juliaup/bin:*)
+    *:/home/vanellope/.juliaup/bin:*)
         ;;
 
     *)
-        export PATH=/home/sofia/.juliaup/bin${PATH:+:${PATH}}
+        export PATH=/home/vanellope/.juliaup/bin${PATH:+:${PATH}}
         ;;
 esac
 
-export FZF_DEFAULT_COMMAND="find . -path '*/.git/*' -prune -o -printf '%P\n'"
 # <<< juliaup initialize <<<
 
 # >>> conda initialize >>>
@@ -166,3 +164,5 @@ if [ -f "/home/vanellope/miniforge3/etc/profile.d/mamba.sh" ]; then
     . "/home/vanellope/miniforge3/etc/profile.d/mamba.sh"
 fi
 # <<< conda initialize <<<
+[[ ${BLE_VERSION-} ]] && ble-attach # This line must be the last one
+export PATH=/usr/local/cuda-12.3/bin:$PATH

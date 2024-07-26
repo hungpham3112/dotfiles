@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Define constants
 DOTFILES_DIR="$HOME/.dotfiles"
 CONFIG_DIR="$HOME/.config"
 GREEN='\033[0;32m' # Green Color
@@ -7,6 +8,7 @@ RED='\033[0;31m' # Red Color
 NC='\033[0m' # No Color
 CHECK_DONE='\xE2\x9C\x94'
 
+# Function to print the ASCII art logo
 function print_logo() {
     cat << 'EOF'
 
@@ -26,10 +28,12 @@ Welcome to Apps Installer <3
 EOF
 }
 
+# Function to update and upgrade the system
 function update_system() {
     sudo apt update && sudo apt upgrade
 }
 
+# Function to install a package if it's not already installed
 function install_package() {
     local package="$1"
     if command -v "$package" > /dev/null; then
@@ -41,10 +45,12 @@ function install_package() {
     fi
 }
 
+# Function to install vide (assuming it's a custom tool)
 function install_vide() {
     bash <(curl -s https://raw.githubusercontent.com/hungpham3112/vide/main/bin/install.sh)
 }
 
+# Function to clone the dotfiles repository
 function clone_dotfiles() {
     if [[ -d "$DOTFILES_DIR" ]]; then
         sudo rm -rf "$DOTFILES_DIR"
@@ -56,6 +62,7 @@ function clone_dotfiles() {
     fi
 }
 
+# Function to load GNOME shell settings
 function load_gnome_shell_settings() {
     if dconf load /org/gnome/terminal/legacy/profiles:/ < "${DOTFILES_DIR}/gterminal.preferences"; then
         printf "${GREEN}Loading gnome shell settings successfully ${CHECK_DONE}${NC}\n"
@@ -64,6 +71,7 @@ function load_gnome_shell_settings() {
     fi
 }
 
+# Function to create a symlink
 function symlink_file() {
     local src="$1"
     local dest="$2"
@@ -80,6 +88,7 @@ function symlink_file() {
     fi
 }
 
+# Function to install themes
 function install_themes() {
     local theme_dir="/usr/share/themes/Sweet/"
     if [[ -d "$theme_dir" ]]; then
@@ -92,6 +101,7 @@ function install_themes() {
     fi
 }
 
+# Function to install icons
 function install_icons() {
     local icon_dir="/usr/share/icons/candy-icons/"
     if [[ -d "$icon_dir" ]]; then
@@ -104,6 +114,7 @@ function install_icons() {
     fi
 }
 
+# Function to install ble.sh (Bash Line Editor)
 function install_ble() {
     local ble_dir="$HOME/ble.sh/"
     if [[ -d "$ble_dir" ]]; then
@@ -119,6 +130,7 @@ function install_ble() {
     fi
 }
 
+# Function to install Mamba (a fast implementation of Conda)
 function install_mamba() {
     local miniforge_dir="$HOME/miniforge3/"
     if [[ -d "$miniforge_dir" ]]; then
@@ -134,24 +146,30 @@ function install_mamba() {
     fi
 }
 
+# Function to set up key swapping
 function setup_swapkey() {
     # Install required packages
     install_package inotify-tools
     install_package x11-xserver-utils
     install_package xkbset
 
+    # Make keymap_monitor.sh executable
+    sudo chmod +x "${CONFIG_DIR}/custom_keymap/keymap_monitor.sh"
+    sudo chmod +x "${CONFIG_DIR}/custom_keymap/apply_keymap.sh"
+
     # Enable and start the custom keymap service
+    systemctl --user daemon-reload
     systemctl --user enable custom_keymap.service
     systemctl --user start custom_keymap.service
 }
 
+# Main function to orchestrate the entire setup process
 function main() {
     print_logo
     update_system
     install_package curl
     install_vide
     clone_dotfiles
-    symlink_file "${DOTFILES_DIR}/swapkey.desktop" "${CONFIG_DIR}/autostart/swapkey.desktop"
     install_themes
     install_icons
     install_ble
@@ -160,10 +178,12 @@ function main() {
     symlink_file "${DOTFILES_DIR}/alacritty/alacritty.toml" "${CONFIG_DIR}/alacritty/alacritty.toml"
     symlink_file "${DOTFILES_DIR}/.bashrc" "$HOME/.bashrc"
     symlink_file "${DOTFILES_DIR}/custom_keymap/custom_keymap.service" "${CONFIG_DIR}/systemd/user/custom_keymap.service"
+    symlink_file "${DOTFILES_DIR}/custom_keymap/apply_keymap.sh" "${CONFIG_DIR}/custom_keymap/apply_keymap.sh"
     symlink_file "${DOTFILES_DIR}/custom_keymap/keymap_monitor.sh" "${CONFIG_DIR}/custom_keymap/keymap_monitor.sh"
     symlink_file "${DOTFILES_DIR}/custom_keymap/custom_keymap.xkb" "${CONFIG_DIR}/custom_keymap/custom_keymap.xkb"
     install_mamba
     setup_swapkey
 }
 
+# Execute the main function
 main

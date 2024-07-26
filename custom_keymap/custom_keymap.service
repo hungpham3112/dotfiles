@@ -1,0 +1,10 @@
+[Unit]
+Description=Apply and monitor custom keymap
+After=graphical-session.target
+
+[Service]
+ExecStart=%h/.config/custom_keymap/keymap_monitor.sh
+Restart=always
+
+[Install]
+WantedBy=graphical-session.target

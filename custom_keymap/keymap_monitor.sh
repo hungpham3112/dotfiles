@@ -58,8 +58,13 @@ main() {
 
     # Monitor for input device changes and Bluetooth events
     {
-        # Monitor for input device changes (e.g., connecting/disconnecting keyboards)
-        inotifywait -m -e create,delete /dev/input/event* &
+        inotifywait -qm -e create,delete /dev/input |
+        while read -r _; do
+            echo "[INFO] Input device changed. Re-applying keymap..."
+            xkbcomp ~/.config/custom_keymap/custom_keymap.xkb $DISPLAY
+            xmodmap ~/.config/.Xmodmap
+        done
+
         # Monitor Bluetooth events (e.g., connecting/disconnecting Bluetooth devices)
         bluetoothctl --monitor &
     } | while read -r line; do

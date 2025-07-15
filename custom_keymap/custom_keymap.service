@@ -5,7 +5,10 @@ After=graphical-session.target
 [Service]
 ExecStartPre=%h/.config/custom_keymap/apply_keymap.sh
 ExecStart=%h/.config/custom_keymap/keymap_monitor.sh
-Restart=always
+Restart=on-failure
+RestartSec=3
+StartLimitIntervalSec=30
+StartLimitBurst=3
 
 [Install]
 WantedBy=graphical-session.target

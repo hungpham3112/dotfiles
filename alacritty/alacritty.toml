@@ -7,7 +7,7 @@ blinking = "Always"
 TERM = "xterm-256color"
 
 [font.normal]
-family = "Cousine NFM"
+family = "Cousine Nerd Font Mono"
 style = "Regular"
 
 [[keyboard.bindings]]

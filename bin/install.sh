@@ -50,6 +50,23 @@ function install_vide() {
     bash <(curl -s https://raw.githubusercontent.com/hungpham3112/vide/main/bin/install.sh)
 }
 
+function install_spotify() {
+    curl -sS https://download.spotify.com/debian/pubkey_C85668DF69375001.gpg | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
+    echo "deb https://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+    sudo apt-get update && sudo apt-get install spotify-client
+    sudo chmod a+wr /usr/share/spotify
+    sudo chmod a+wr /usr/share/spotify/Apps -R
+}
+
+function install_spicetify() {
+    curl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh
+    spicetify backup apply
+}
+
+function install_spicetify_marketplace() {
+    curl -fsSL https://raw.githubusercontent.com/spicetify/marketplace/main/resources/install.sh | sh
+}
+
 # Function to clone the dotfiles repository
 function clone_dotfiles() {
     if [[ -d "$DOTFILES_DIR" ]]; then
@@ -137,7 +154,7 @@ function install_mamba() {
         printf "${GREEN}Mamba already exist ${CHECK_DONE}${NC}\n"
     else
         if curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"; then
-            bash "Miniforge3-$(uname)-$(uname -m).sh"
+            bash "Miniforge3-$(uname)-$(uname -m).sh" -b # Run in non-interactive mode
             rm "Miniforge3-$(uname)-$(uname -m).sh" -f
             printf "${GREEN}Install mamba successfully ${CHECK_DONE}${NC}\n"
         else
@@ -173,15 +190,19 @@ function main() {
     install_themes
     install_icons
     install_ble
+    install_spotify
+    install_spicetify
     load_gnome_shell_settings
     symlink_file "${DOTFILES_DIR}/.Xmodmap" "${CONFIG_DIR}/.Xmodmap"
     symlink_file "${DOTFILES_DIR}/alacritty/alacritty.toml" "${CONFIG_DIR}/alacritty/alacritty.toml"
+    symlink_file "${DOTFILES_DIR}/spicetify/config-xpui.ini" "${CONFIG_DIR}/spicetify/config-xpui.ini"
     symlink_file "${DOTFILES_DIR}/.bashrc" "$HOME/.bashrc"
     symlink_file "${DOTFILES_DIR}/custom_keymap/custom_keymap.service" "${CONFIG_DIR}/systemd/user/custom_keymap.service"
     symlink_file "${DOTFILES_DIR}/custom_keymap/apply_keymap.sh" "${CONFIG_DIR}/custom_keymap/apply_keymap.sh"
     symlink_file "${DOTFILES_DIR}/custom_keymap/keymap_monitor.sh" "${CONFIG_DIR}/custom_keymap/keymap_monitor.sh"
     symlink_file "${DOTFILES_DIR}/custom_keymap/custom_keymap.xkb" "${CONFIG_DIR}/custom_keymap/custom_keymap.xkb"
     install_mamba
+    install_spicetify_marketplace
     setup_swapkey
 }
 

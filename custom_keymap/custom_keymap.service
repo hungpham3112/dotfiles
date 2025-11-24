@@ -1,14 +1,14 @@
 [Unit]
 Description=Apply and monitor custom keymap
 After=graphical-session.target
+StartLimitIntervalSec=30
+StartLimitBurst=3
 
 [Service]
 ExecStartPre=%h/.config/custom_keymap/apply_keymap.sh
 ExecStart=%h/.config/custom_keymap/keymap_monitor.sh
 Restart=on-failure
 RestartSec=3
-StartLimitIntervalSec=30
-StartLimitBurst=3
 
 [Install]
 WantedBy=graphical-session.target

@@ -322,6 +322,7 @@ function main() {
     symlink_file "${DOTFILES_DIR}/alacritty/alacritty.toml" "${CONFIG_DIR}/alacritty/alacritty.toml"
     # symlink_file "${DOTFILES_DIR}/spicetify/config-xpui.ini" "${CONFIG_DIR}/spicetify/config-xpui.ini"
     symlink_file "${DOTFILES_DIR}/.bashrc" "$HOME/.bashrc"
+    symlink_file "${DOTFILES_DIR}/.tmux.conf" "$HOME/.tmux.conf"
     symlink_file "${DOTFILES_DIR}/custom_keymap/custom_keymap.service" "${CONFIG_DIR}/systemd/user/custom_keymap.service"
     symlink_file "${DOTFILES_DIR}/custom_keymap/apply_keymap.sh" "${CONFIG_DIR}/custom_keymap/apply_keymap.sh"
     symlink_file "${DOTFILES_DIR}/custom_keymap/keymap_monitor.sh" "${CONFIG_DIR}/custom_keymap/keymap_monitor.sh"

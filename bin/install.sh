@@ -311,7 +311,7 @@ function install_snap_apps() {
 function main() {
     print_logo
     update_system
-    install_system_wide_packages curl ibus-unikey neofetch libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev gzip scdoc snapd
+    install_system_packages curl ibus-unikey neofetch libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev gzip scdoc snapd
     install_vide
     clone_dotfiles
     install_themes

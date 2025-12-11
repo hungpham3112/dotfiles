@@ -1,0 +1,13 @@
+# Rule: If the file path contains /usr/lib/avr, treat it as AVR code.
+If:
+  PathMatch: .*/usr/lib/avr/.*
+
+CompileFlags:
+  Remove:
+    - -m*
+  Add:
+    - --target=avr
+    - -mmcu=atmega328p
+    - -D__AVR_ATmega328P__
+    - -isystem/usr/lib/gcc/avr/5.4.0/include
+    - -isystem/usr/lib/avr/include

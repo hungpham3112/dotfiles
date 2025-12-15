@@ -1,4 +1,6 @@
-[[ $- == *i* ]] && source $HOME/.local/share/blesh/ble.sh --noattach # This line must be the first one
+[[ $- != *i* ]] && return
+source $HOME/.local/share/blesh/ble.sh --noattach # This line must be the first one for interactive shell
+
 fastfetch
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)

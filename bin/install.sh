@@ -64,6 +64,11 @@ function install_system_packages() {
     fi
 }
 
+function install_fastfetch() {
+    sudo add-apt-repository ppa:zhangsongcui3371/fastfetch
+    sudo apt update
+}
+
 function install_alacritty() {
     # Clone and build
     git clone https://github.com/alacritty/alacritty.git
@@ -162,7 +167,7 @@ function symlink_file() {
     if [[ -f "$dest" ]]; then
         sudo rm "$dest"
     fi
-    if sudo ln -s "$src" "$dest"; then
+    if ln -s "$src" "$dest"; then
         printf "${GREEN}Symlink %s to %s successfully ${CHECK_DONE}${NC}\n" "$src" "$dest"
     else
         printf "${RED}Symlink %s to %s fail ${NC}\n" "$src" "$dest"
@@ -311,7 +316,8 @@ function install_snap_apps() {
 function main() {
     print_logo
     update_system
-    install_system_packages curl ibus-unikey neofetch libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev gzip scdoc snapd
+    install_system_packages software-properties-common 
+    install_system_packages curl ibus-unikey fastfetch libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev gzip scdoc snapd
     install_vide
     clone_dotfiles
     install_themes
@@ -320,6 +326,7 @@ function main() {
     load_gnome_shell_settings
     symlink_file "${DOTFILES_DIR}/.Xmodmap" "${CONFIG_DIR}/.Xmodmap"
     symlink_file "${DOTFILES_DIR}/alacritty/alacritty.toml" "${CONFIG_DIR}/alacritty/alacritty.toml"
+    symlink_file "${DOTFILES_DIR}/fastfetch/config.jsonc" "${CONFIG_DIR}/fastfetch/config.jsonc"
     # symlink_file "${DOTFILES_DIR}/spicetify/config-xpui.ini" "${CONFIG_DIR}/spicetify/config-xpui.ini"
     symlink_file "${DOTFILES_DIR}/.bashrc" "$HOME/.bashrc"
     symlink_file "${DOTFILES_DIR}/.tmux.conf" "$HOME/.tmux.conf"

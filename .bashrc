@@ -1,5 +1,5 @@
 [[ $- == *i* ]] && source $HOME/.local/share/blesh/ble.sh --noattach # This line must be the first one
-neofetch
+fastfetch
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -126,23 +126,6 @@ mcd()
     test -d "$1" || mkdir "$1" && cd "$1"
 }
 
-refreshenv()
-{
-    source ~/.bashrc
-}
-
-# >>> juliaup initialize >>>
-
-# !! Contents within this block are managed by juliaup !!
-
-case ":$PATH:" in
-    *:$HOME/.juliaup/bin:*)
-        ;;
-    *)
-        export PATH="$HOME/.juliaup/bin${PATH:+:${PATH}}"
-        ;;
-esac
-
 export PATH=/usr/local/cuda-12.3/bin:$PATH
 
 # >>> mamba initialize >>>
@@ -177,15 +160,11 @@ if [ -f "$HOME/miniforge3/etc/profile.d/mamba.sh" ]; then
 fi
 # <<< conda initialize <<<
 
-
 export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
 export PATH="$PATH:$HOME/.spicetify"  # Đã sửa
 . "$HOME/.cargo/env"
 source "$HOME/.bash_completion/alacritty" # Dùng $HOME thay vì ~ cho nhất quán, mặc dù ~ cũng hoạt động
 
-alias op="$HOME/openpilot/tools/op.sh" # Đã sửa, bỏ '$@' vì nó không cần thiết trong định nghĩa alias này
-
 . "$HOME/.local/bin/env"
 
-export STM32_PRG_PATH=/home/alice/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin
 [[ ${BLE_VERSION-} ]] && ble-attach # This line must be the last one

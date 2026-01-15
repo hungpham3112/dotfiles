@@ -98,6 +98,8 @@ alias l='ls -CF'
 alias vim=vi
 alias cls=clear
 alias md=mkdir
+alias vf8="ssh nvidia@192.168.195.102"
+alias santafe="ssh nvidia@192.168.195.101"
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -166,7 +168,5 @@ export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
 export PATH="$PATH:$HOME/.spicetify"  # Đã sửa
 . "$HOME/.cargo/env"
 source "$HOME/.bash_completion/alacritty" # Dùng $HOME thay vì ~ cho nhất quán, mặc dù ~ cũng hoạt động
-
-. "$HOME/.local/bin/env"
 
 [[ ${BLE_VERSION-} ]] && ble-attach # This line must be the last one

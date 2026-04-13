@@ -163,10 +163,13 @@ if [ -f "$HOME/miniforge3/etc/profile.d/mamba.sh" ]; then
     . "$HOME/miniforge3/etc/profile.d/mamba.sh"
 fi
 # <<< conda initialize <<<
-
+# export GOOGLE_CLOUD_PROJECT="shaped-clarity-428315-h1"
 export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
 export PATH="$PATH:$HOME/.spicetify"  # Đã sửa
 . "$HOME/.cargo/env"
 source "$HOME/.bash_completion/alacritty" # Dùng $HOME thay vì ~ cho nhất quán, mặc dù ~ cũng hoạt động
 
 [[ ${BLE_VERSION-} ]] && ble-attach # This line must be the last one
+
+# opencode
+export PATH=/home/alice/.opencode/bin:$PATH

@@ -288,23 +288,49 @@ function install_conda_base_packages() {
     fi
 }
 
-# Function to set up key swapping
-function setup_swapkey() {
-    # Install required packages
-    install_package inotify-tools
-    install_package x11-xserver-utils
-    install_package xkbset
-
-    # Make keymap_monitor.sh executable
-    sudo chmod +x "${CONFIG_DIR}/custom_keymap/keymap_monitor.sh"
-    sudo chmod +x "${CONFIG_DIR}/custom_keymap/apply_keymap.sh"
-
-    # Enable and start the custom keymap service
-    systemctl --user daemon-reload
-    systemctl --user enable custom_keymap.service
-    systemctl --user start custom_keymap.service
+function install_keyd() {
+    if ! dpkg -s keyd &> /dev/null; then
+        printf "${GREEN}Adding keyd PPA and installing...${NC}\n"
+        sudo add-apt-repository -y ppa:keyd-team/ppa
+        sudo apt update
+        install_system_packages keyd
+    else
+        printf "  ${GREEN}keyd is already installed ${CHECK_DONE}${NC}\n"
+    fi
 }
 
+function setup_swapkey() {
+    printf "${GREEN}Configuring kernel-level keymap (keyd)...${NC}\n"
+    
+    # 1. Fix the Upstream/Downstream namespace collision
+    if [[ ! -f "/usr/bin/keyd" && -f "/usr/bin/keyd.rvaiya" ]]; then
+        sudo ln -s /usr/bin/keyd.rvaiya /usr/bin/keyd
+        printf "  ${GREEN}Created symlink for keyd.rvaiya -> keyd ${CHECK_DONE}${NC}\n"
+    fi
+    
+    # 2. Create the configuration directory
+    sudo mkdir -p /etc/keyd
+    
+    # 3. Write the declarative state machine config
+    sudo tee /etc/keyd/default.conf > /dev/null <<EOF
+[ids]
+*
+
+[main]
+capslock = escape
+escape = capslock
+tab = leftcontrol
+leftcontrol = tab
+EOF
+    printf "  ${GREEN}Wrote /etc/keyd/default.conf ${CHECK_DONE}${NC}\n"
+    
+    # 4. Enable, start, and reload the daemon
+    sudo systemctl enable keyd
+    sudo systemctl start keyd
+    sudo keyd reload
+    
+    printf "${GREEN}Keymap configuration complete ${CHECK_DONE}${NC}\n"
+}
 
 function install_snap_apps() {
     sudo snap install notion-desktop
@@ -316,29 +342,27 @@ function install_snap_apps() {
 function main() {
     print_logo
     update_system
-    install_system_packages software-properties-common 
-    install_system_packages curl ibus-unikey fastfetch libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev gzip scdoc snapd
+    install_system_packages software-properties-common curl ibus-unikey fastfetch libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev gzip scdoc snapd wl-clipboard
+
     install_vide
     clone_dotfiles
     install_themes
     install_icons
     install_ble
     load_gnome_shell_settings
-    symlink_file "${DOTFILES_DIR}/.Xmodmap" "${CONFIG_DIR}/.Xmodmap"
     symlink_file "${DOTFILES_DIR}/alacritty/alacritty.toml" "${CONFIG_DIR}/alacritty/alacritty.toml"
     symlink_file "${DOTFILES_DIR}/fastfetch/config.jsonc" "${CONFIG_DIR}/fastfetch/config.jsonc"
     # symlink_file "${DOTFILES_DIR}/spicetify/config-xpui.ini" "${CONFIG_DIR}/spicetify/config-xpui.ini"
     symlink_file "${DOTFILES_DIR}/.bashrc" "$HOME/.bashrc"
     symlink_file "${DOTFILES_DIR}/.tmux.conf" "$HOME/.tmux.conf"
-    symlink_file "${DOTFILES_DIR}/custom_keymap/custom_keymap.service" "${CONFIG_DIR}/systemd/user/custom_keymap.service"
-    symlink_file "${DOTFILES_DIR}/custom_keymap/apply_keymap.sh" "${CONFIG_DIR}/custom_keymap/apply_keymap.sh"
-    symlink_file "${DOTFILES_DIR}/custom_keymap/keymap_monitor.sh" "${CONFIG_DIR}/custom_keymap/keymap_monitor.sh"
-    symlink_file "${DOTFILES_DIR}/custom_keymap/custom_keymap.xkb" "${CONFIG_DIR}/custom_keymap/custom_keymap.xkb"
     install_spotify
     install_spicetify
     install_mamba
     install_conda_base_packages cmake openssh curl
+
+    install_keyd
     setup_swapkey
+
     install_nvide # depend on cmake from mamba
     install_alacritty
     install_snap_apps
